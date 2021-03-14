@@ -17,6 +17,8 @@ byte rowPins[COLS] = {7, 6, 5, 4};
 byte colPins[ROWS] = {3, 2, 1, 0};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 String intensityValueBuffer = "";
+String lastLuminosityValue = "0";
+String luminosityValue = "0";
 int ledPin = 9;
 
 void setup() {
@@ -77,6 +79,7 @@ void handleKey(char key) {
 
 void handleNumberKey(String key) {
   intensityValueBuffer = intensityValueBuffer + key;
+  luminosityValue = intensityValueBuffer;
   printLcd(1, 0, intensityValueBuffer);
 }
 
@@ -111,12 +114,14 @@ void invalidKeyHandler() {
 }
 
 void clearLcd() {
+    String potenciaDisplay = "Potencia: " + lastLuminosityValue;
     lcd.clear();
-    printLcd(0, 0, "Escala (0-100):");
+    printLcd(0, 0, potenciaDisplay);
 }
 
 void defineLedIntensity(int value) {
   int luminosity = value * 2;
   analogWrite(ledPin, luminosity);
   intensityValueBuffer = "";
+  lastLuminosityValue = luminosityValue;
 }
