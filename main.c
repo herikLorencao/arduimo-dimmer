@@ -93,10 +93,6 @@ void confirmKeyHandler() {
     invalidKeyHandler();
   } else {
     defineLedIntensity(intensityValueBuffer.toInt());
-    clearLcd();
-    printLcd(1, 0, "Valor definido");
-    delay(1000);
-    clearLcd();
   }
 }
 
@@ -113,6 +109,14 @@ void invalidKeyHandler() {
   printLcd(1, 0, intensityValueBuffer);
 }
 
+void invalidValue() {
+  printLcd(1, 0, "Valor Invalido");
+  delay(1000);
+  intensityValueBuffer = "";
+  clearLcd();
+  printLcd(1, 0, intensityValueBuffer);
+}
+
 void clearLcd() {
     String potenciaDisplay = "Potencia: " + lastLuminosityValue;
     lcd.clear();
@@ -120,8 +124,16 @@ void clearLcd() {
 }
 
 void defineLedIntensity(int value) {
-  int luminosity = value * 2;
-  analogWrite(ledPin, luminosity);
-  intensityValueBuffer = "";
-  lastLuminosityValue = luminosityValue;
+  if (value < 100) {
+    int luminosity = value * 2;
+    analogWrite(ledPin, luminosity);
+    intensityValueBuffer = "";
+    lastLuminosityValue = luminosityValue;
+    clearLcd();
+    printLcd(1, 0, "Valor definido");
+    delay(1000);
+    clearLcd();
+  } else {
+    invalidValue();
+  }
 }
