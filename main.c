@@ -124,7 +124,7 @@ void clearLcd() {
 }
 
 void defineLedIntensity(int value) {
-  if (value < 100) {
+  if (value < 101) {
     int luminosity = value * 2;
     analogWrite(ledPin, luminosity);
     intensityValueBuffer = "";
